@@ -1,0 +1,875 @@
+/* ============================================================
+   Monica Martinez Art Gallery — style.css
+   Paleta crema/dorado · Cormorant Garamond + Inter
+   ============================================================ */
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Regla crítica: el atributo [hidden] siempre gana sobre cualquier display */
+[hidden] { display: none !important; }
+
+/* Cuando se entra a una galería de artista (Vista 2), ocultar hero y Sobre Mí */
+body.is-vista-obras .hero,
+body.is-vista-obras .sobre-section { display: none !important; }
+
+:root {
+  /* Paleta */
+  --crema:       #faf6ef;
+  --crema-2:     #f5efe6;
+  --tinta:       #2a2520;
+  --tinta-soft:  #5a5249;
+  --dorado:      #b8946a;
+  --dorado-soft: #d2b78f;
+  --linea:       #e0d6c5;
+  --rojo-vendido: #B0282E;
+
+  /* Aliases para compatibilidad si algo sobrevive */
+  --blanco:      var(--crema);
+  --negro:       var(--tinta);
+  --beige:       var(--crema-2);
+  --beige-med:   var(--linea);
+  --gris-claro:  var(--crema-2);
+  --gris-medio:  #9c8f7d;
+  --gris-texto:  var(--tinta-soft);
+  --acento:      var(--dorado);
+
+  /* Tipografía */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Transiciones */
+  --trans:  0.3s ease;
+  --trans-2: 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--crema);
+  color: var(--tinta);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Patrón de "mariposas" (logo) repetido como textura sutil */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url('images/logo.png');
+  background-size: 300px;
+  background-repeat: repeat;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: -1;
+  filter: grayscale(100%);
+}
+
+a   { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(250, 246, 239, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--linea);
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--tinta);
+}
+.nav-logo span {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-left: 0.5rem;
+  color: var(--gris-medio);
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2.5rem;
+}
+.nav-links a {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinta-soft);
+  transition: color var(--trans);
+}
+.nav-links a:hover { color: var(--dorado); }
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--tinta);
+  transition: var(--trans);
+}
+.nav-mobile {
+  display: none;
+  flex-direction: column;
+  padding: 1rem 2rem 1.5rem;
+  background: var(--crema);
+  border-top: 1px solid var(--linea);
+}
+.nav-mobile a {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-soft);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--linea);
+}
+.nav-mobile.open { display: flex; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 100px 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+  background: var(--crema);
+}
+.hero-content {
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  animation: fadeUp 0.9s ease both;
+}
+.hero-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dorado);
+  margin-bottom: 1.5rem;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5.6rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--tinta);
+  margin-bottom: 1.5rem;
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--tinta-soft);
+}
+.hero-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--tinta-soft);
+  letter-spacing: 0.05em;
+  margin-bottom: 2.5rem;
+}
+.hero-deco {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.hero-deco img {
+  width: 220px;
+  height: auto;
+  opacity: 0.18;
+  filter: grayscale(100%);
+}
+
+/* ===== BOTONES ===== */
+.btn-primary {
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  background: var(--tinta);
+  color: var(--crema);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--tinta);
+  transition: background var(--trans), color var(--trans);
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--tinta);
+}
+
+/* ===== GALERÍA — wrapper común ===== */
+.galeria-section {
+  padding: 6rem 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+.section-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  color: var(--tinta);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+.section-header p {
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dorado);
+}
+.vista { animation: fadeUp 0.5s ease both; }
+
+/* ============================================================
+   VISTA 1 — Tarjetas de artistas
+   ============================================================ */
+.artistas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem 2rem;
+}
+.artista-card {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  transition: transform var(--trans);
+}
+.artista-card-imagen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--crema-2);
+  border: 1px solid var(--linea);
+}
+.artista-card-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--trans-2);
+}
+.artista-card:hover .artista-card-imagen img { transform: scale(1.04); }
+
+.artista-card-info {
+  padding: 1.25rem 0.25rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.3rem;
+}
+.artista-card-nombre {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--tinta);
+}
+.artista-card-estilo {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--dorado);
+}
+.artista-card-obras {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gris-medio);
+}
+/* CTA siempre visible — el verdadero botón visual */
+.artista-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  background: var(--tinta);
+  color: var(--crema);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: 1px solid var(--tinta);
+  transition: background var(--trans), color var(--trans), transform var(--trans);
+}
+.artista-card-cta em {
+  font-style: normal;
+  margin-left: 0.1rem;
+  transition: transform var(--trans);
+  display: inline-block;
+}
+.artista-card:hover .artista-card-cta {
+  background: var(--dorado);
+  border-color: var(--dorado);
+}
+.artista-card:hover .artista-card-cta em { transform: translateX(4px); }
+.artista-card:active .artista-card-cta { transform: scale(0.97); }
+
+/* ============================================================
+   VISTA 2 — Galería del artista
+   ============================================================ */
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--crema-2);
+  border: 1px solid var(--linea);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--tinta);
+  padding: 1rem 1.75rem;
+  margin-bottom: 3.5rem;
+  border-radius: 2px;
+  transition: background var(--trans), color var(--trans), border-color var(--trans), transform var(--trans);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+}
+.btn-volver:hover {
+  background: var(--tinta);
+  color: var(--crema);
+  border-color: var(--tinta);
+}
+.btn-volver:active { transform: scale(0.98); }
+.btn-volver-flecha {
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: transform var(--trans);
+}
+.btn-volver:hover .btn-volver-flecha { transform: translateX(-4px); }
+.btn-volver-texto { line-height: 1; }
+
+.artista-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+.artista-header .artista-nombre {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 300;
+  color: var(--tinta);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.artista-header .artista-bio {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--tinta-soft);
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.obras-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem 2rem;
+  align-items: start;
+}
+.obra-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+.obra-card-imagen {
+  position: relative;
+  width: 100%;
+  height: 360px;                       /* altura fija para que entren 4 obras en pantalla */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: transparent;             /* sin recuadro, la imagen flota sobre la crema del fondo */
+  border: none;
+}
+.obra-card-imagen img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;                 /* no recorta: la imagen completa siempre */
+  transition: transform var(--trans-2);
+}
+.obra-card:hover .obra-card-imagen img { transform: scale(1.04); }
+
+/* Vendidos: la obra se ve a color (como la original), el sello/badge es lo que marca el estado */
+.obra-card-vendido {
+  position: absolute;
+  top: 1rem; left: 1rem;
+  background: var(--rojo-vendido);
+  color: #fff;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  z-index: 2;
+}
+
+.obra-card-info {
+  padding: 1rem 0.2rem 0;
+}
+.obra-card-titulo {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--tinta);
+  line-height: 1.25;
+}
+.obra-card-tecnica {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gris-medio);
+  margin-top: 0.4rem;
+}
+
+/* ============================================================
+   VISTA 3 — Modal
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(20, 16, 12, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity var(--trans);
+}
+.modal-overlay.is-open { opacity: 1; }
+
+.modal-content {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  width: 100%;
+  max-width: 1200px;
+  max-height: calc(100vh - 4rem);
+  background: var(--crema);
+  box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+  overflow: hidden;
+  transform: translateY(16px) scale(0.98);
+  transition: transform var(--trans-2);
+}
+.modal-overlay.is-open .modal-content { transform: translateY(0) scale(1); }
+
+.modal-imagen-wrap {
+  position: relative;
+  background: var(--crema-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 350px;
+}
+.modal-img {
+  max-width: 100%;
+  max-height: calc(100vh - 4rem);
+  object-fit: contain;
+  transition: opacity 0.35s ease;
+}
+/* Modal: la imagen del vendido también se ve a color */
+
+.modal-sello-vendido {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  background: rgba(176, 40, 46, 0.95);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.35), inset 0 0 0 4px rgba(255,255,255,0.85);
+  transform: rotate(-12deg);
+  z-index: 3;
+  pointer-events: none;
+  font-family: var(--font-display);
+  letter-spacing: 0.15em;
+}
+.modal-sello-vendido span {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.modal-info {
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  overflow-y: auto;
+  background: var(--crema);
+}
+.modal-tecnica {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dorado);
+  font-weight: 500;
+}
+.modal-titulo {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--tinta);
+}
+.modal-sep {
+  border: none;
+  height: 1px;
+  background: var(--linea);
+  margin: 0.5rem 0;
+}
+.modal-detalles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.modal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+.modal-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gris-medio);
+}
+.modal-val {
+  font-size: 0.95rem;
+  color: var(--tinta);
+  text-align: right;
+  max-width: 60%;
+}
+.modal-val.modal-precio {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--tinta);
+  font-weight: 400;
+}
+.modal-val.modal-precio.es-consultar {
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--tinta-soft);
+}
+.modal-desc {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--tinta-soft);
+  padding-top: 0.5rem;
+}
+.modal-cta {
+  display: block;
+  text-align: center;
+  margin-top: auto;
+  padding: 1rem 1.25rem;
+  background: var(--tinta);
+  color: var(--crema);
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: 1px solid var(--tinta);
+  transition: background var(--trans), color var(--trans);
+}
+.modal-cta:hover {
+  background: var(--dorado);
+  border-color: var(--dorado);
+}
+.modal-cta.es-vendido {
+  background: var(--rojo-vendido);
+  border-color: var(--rojo-vendido);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Botón cerrar */
+.modal-close {
+  position: fixed;
+  top: 1.5rem; right: 1.5rem;
+  z-index: 1002;
+  width: 44px; height: 44px;
+  background: rgba(250,246,239,0.92);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: var(--tinta);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background var(--trans), transform var(--trans);
+}
+.modal-close:hover { background: #fff; transform: scale(1.05); }
+
+/* Flechas de navegación */
+.modal-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1001;
+  width: 52px; height: 52px;
+  background: rgba(250,246,239,0.9);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: var(--tinta);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background var(--trans), transform var(--trans);
+}
+.modal-arrow:hover { background: #fff; }
+.modal-prev { left: 1.5rem; }
+.modal-next { right: 1.5rem; }
+
+/* ===== SOBRE MÍ ===== */
+.sobre-section {
+  padding: 7rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.sobre-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+.sobre-deco {
+  aspect-ratio: 3/4;
+  background: var(--crema-2);
+  border: 1px solid var(--linea);
+  position: relative;
+  overflow: hidden;
+}
+.sobre-deco img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.sobre-deco::after {
+  content: '';
+  position: absolute;
+  bottom: -1.5rem; right: -1.5rem;
+  width: 80%; height: 80%;
+  border: 1px solid var(--dorado-soft);
+  z-index: -1;
+}
+.sobre-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dorado);
+  display: block;
+  margin-bottom: 1rem;
+}
+.sobre-texto h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 300;
+  color: var(--tinta);
+  margin-bottom: 1.5rem;
+  line-height: 1.15;
+}
+.sobre-texto p {
+  font-size: 0.95rem;
+  color: var(--tinta-soft);
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+.sobre-texto .btn-primary { margin-top: 1rem; }
+
+/* ===== CONTACTO ===== */
+.contacto-section {
+  background: var(--tinta);
+  padding: 6rem 2rem;
+  color: var(--crema);
+}
+.contacto-section .section-header h2 { color: var(--crema); }
+.contacto-section .section-header p { color: var(--dorado-soft); }
+.section-header.light { margin-bottom: 3rem; }
+
+.contacto-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #3a3128;
+}
+.contacto-card {
+  background: var(--tinta);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  transition: background var(--trans);
+  color: var(--crema);
+}
+.contacto-card:hover { background: #211c18; }
+.contacto-icon {
+  width: 52px; height: 52px;
+  border: 1px solid var(--dorado-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dorado-soft);
+  margin-bottom: 0.5rem;
+}
+.contacto-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dorado-soft);
+}
+.contacto-val {
+  font-size: 0.82rem;
+  color: var(--crema);
+  white-space: nowrap;     /* mantener en un solo renglón */
+  letter-spacing: 0;
+}
+/* En pantallas muy chicas sí dejamos que se rompa para que no salga del card */
+@media (max-width: 480px) {
+  .contacto-val { white-space: normal; word-break: break-word; }
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background: #1c1814;
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+.footer-inner { max-width: 900px; margin: 0 auto; }
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--crema);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+.footer-legal {
+  font-size: 0.72rem;
+  color: #7a6f60;
+  letter-spacing: 0.05em;
+  margin-top: 0.3rem;
+  line-height: 1.6;
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .modal-content { grid-template-columns: 1fr; max-height: calc(100vh - 2rem); }
+  .modal-imagen-wrap { max-height: 50vh; }
+  .modal-info { padding: 2rem 1.75rem; }
+  .modal-titulo { font-size: 2rem; }
+}
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .artistas-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem 1.25rem; }
+  .obras-grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.5rem; }
+  .sobre-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .sobre-deco { display: none; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 90px 1.25rem 3rem; }
+  .galeria-section { padding: 4rem 1.25rem; }
+  .sobre-section { padding: 4rem 1.25rem; }
+  .contacto-section { padding: 4rem 1.25rem; }
+
+  .obras-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+  .modal-overlay { padding: 0; }
+  .modal-content {
+    max-height: 100vh;
+    height: 100vh;
+    grid-template-rows: auto 1fr;
+  }
+  .modal-imagen-wrap { max-height: 45vh; min-height: 0; }
+  .modal-info { padding: 1.5rem 1.25rem 2rem; }
+  .modal-titulo { font-size: 1.6rem; }
+  .modal-arrow { width: 40px; height: 40px; }
+  .modal-prev { left: 0.5rem; }
+  .modal-next { right: 0.5rem; }
+  .modal-close { top: 0.75rem; right: 0.75rem; width: 38px; height: 38px; font-size: 1.3rem; }
+  .modal-sello-vendido { width: 90px; height: 90px; top: 0.75rem; right: 0.75rem; }
+  .modal-sello-vendido span { font-size: 1.1rem; }
+}

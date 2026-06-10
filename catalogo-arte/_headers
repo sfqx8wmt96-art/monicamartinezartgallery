@@ -1,0 +1,21 @@
+# Cache largo para imágenes (1 año) — son inmutables
+/images_web/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# CSS y JS — siempre revalidar (los cambios se ven al instante)
+/*.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# JSON de datos — siempre revalidar
+/datos.json
+  Cache-Control: public, max-age=0, must-revalidate
+
+# HTML — siempre validar para que los cambios se vean al instante
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

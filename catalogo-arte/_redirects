@@ -1,0 +1,6 @@
+# Forzar HTTPS (lo hace Netlify automático, esto es un seguro extra)
+http://monicamartinezartgallery.com/* https://monicamartinezartgallery.com/:splat 301!
+http://www.monicamartinezartgallery.com/* https://monicamartinezartgallery.com/:splat 301!
+
+# www -> apex
+https://www.monicamartinezartgallery.com/* https://monicamartinezartgallery.com/:splat 301!
